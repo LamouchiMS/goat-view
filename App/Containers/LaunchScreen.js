@@ -1,28 +1,53 @@
-import React, { Component } from 'react'
-import { ScrollView, Text, Image, View } from 'react-native'
-import { Images } from '../Themes'
-
-// Styles
+import React, {Component} from 'react'
+import {
+  ScrollView,
+  Text,
+  Image,
+  View,
+  WebView,
+  TouchableHighlight,
+  KeyboardAvoidingView
+} from 'react-native'
+import {Images} from '../Themes'
 import styles from './Styles/LaunchScreenStyles'
 
 export default class LaunchScreen extends Component {
-  render () {
+  state = {
+    rawData: {}
+  }
+  onMessage(params) {
+    const data = params.nativeEvent.data;
+    if (data[0] === '{') {
+      const rawData = JSON.parse(data);
+      this.setState({rawData});
+    }
+  }
+  onPress() {
+    alert(JSON.stringify(this.state.rawData));
+  }
+  renderLoading() {
     return (
-      <View style={styles.mainContainer}>
-        <Image source={Images.background} style={styles.backgroundImage} resizeMode='stretch' />
-        <ScrollView style={styles.container}>
-          <View style={styles.centered}>
-            <Image source={Images.launch} style={styles.logo} />
+      <View style={styles.full}>
+        <Text>LOADING...</Text>
+      </View>
+    )
+  }
+  render() {
+    return (
+      <View style={styles.container}>
+        <WebView
+          renderLoading={this.renderLoading}
+          startInLoadingState
+          style={styles.webview}
+          onMessage={this
+          .onMessage
+          .bind(this)}
+          source={require('../Lib/draft-webview/index.html')}/>
+        <TouchableHighlight style={styles.bottom} onPress={() => this.onPress()}>
+          <View>
+            <Text style={styles.txt}>POST</Text>
           </View>
-
-          <View style={styles.section} >
-            <Image source={Images.ready} />
-            <Text style={styles.sectionText}>
-              This probably isn't what your app is going to look like. Unless your designer handed you this screen and, in that case, congrats! You're ready to ship. For everyone else, this is where you'll see a live preview of your fully functioning app using Ignite.
-            </Text>
-          </View>
-
-        </ScrollView>
+        </TouchableHighlight>
       </View>
     )
   }

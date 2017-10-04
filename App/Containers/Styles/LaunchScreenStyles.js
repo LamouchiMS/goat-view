@@ -1,18 +1,30 @@
-import { StyleSheet } from 'react-native'
-import { Metrics, ApplicationStyles } from '../../Themes/'
+import {StyleSheet, Dimensions} from 'react-native'
+import {ApplicationStyles} from '../../Themes/'
+
+const {width, height} = Dimensions.get('window');
 
 export default StyleSheet.create({
-  ...ApplicationStyles.screen,
   container: {
-    paddingBottom: Metrics.baseMargin
+    flex: 1,
+    width,
+    backgroundColor: '#fafafa'
   },
-  logo: {
-    marginTop: Metrics.doubleSection,
-    height: Metrics.images.logo,
-    width: Metrics.images.logo,
-    resizeMode: 'contain'
+  webview: {
+    backgroundColor: '#fafafa',
+    padding: 50
   },
-  centered: {
-    alignItems: 'center'
+  bottom: {
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#2196F3'
+  },
+  txt: {
+    color: '#fafafa'
+  },
+  full: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })
